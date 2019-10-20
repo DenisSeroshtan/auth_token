@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import RegisterUser from './views/RegisterUser.vue'
 import Dashboard from './views/Dashboard.vue'
 
 Vue.use(Router)
@@ -18,6 +19,11 @@ const router = new Router({
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterUser
     }
   ]
 })
