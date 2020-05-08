@@ -16,11 +16,14 @@ export default new Vuex.Store({
   mutations: {
     SET_USER_DATA  (state, userData) {
       state.user = userData
-      localStorage.setItem('user', JSON.stringify(userData))
-      // eslint-disable-next-line standard/computed-property-even-spacing
-      axios.defaults.headers.common[
-        'Authorization'
-      ] = `Bearer ${userData.token}`
+
+      if (userData !== null) {
+        localStorage.setItem('user', JSON.stringify(userData))
+        axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`
+      } else {
+        localStorage.removeItem('user')
+        axios.defaults.headers.common['Authorization'] = null
+      }
     }
   },
   actions: {
@@ -32,9 +35,15 @@ export default new Vuex.Store({
           commit('SET_USER_DATA', data)
         })
     },
+
     async login ({ commit }, credentials) {
       const { data } = await axios.post('//localhost:3000/login', credentials)
-      commit('SET_USER_DATA', data) 
+      commit('SET_USER_DATA', data)
+    },
+
+    logout ({ commit }) {
+      commit('SET_USER_DATA', null)
+      location.reload()
     }
   }
 })
