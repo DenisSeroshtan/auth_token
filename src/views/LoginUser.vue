@@ -6,7 +6,9 @@
 
       <label for="password">Password:</label>
       <input v-model="password" type="password" name value>
-
+      <p v-if="error">
+        {{ error }}
+      </p>
       <button type="submit" name="button">
         Login
       </button>
@@ -22,16 +24,21 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      error: null
     }
   },
   methods: {
     async login () {
-      await this.$store.dispatch('login', {
-        email: this.email,
-        password: this.password
-      })
-      this.$router.push({ name: 'dashboard' })
+      try {
+        await this.$store.dispatch('login', {
+          email: this.email,
+          password: this.password
+        })
+        this.$router.push({ name: 'dashboard' })
+      } catch (error) {
+        this.error = error.response.data.error
+      }
     }
   }
 }

@@ -9,7 +9,11 @@
 
       <label for="password">Password:</label>
       <input v-model="password" type="password" name value>
-
+      <ul v-if="error">
+        <li v-for="(err, index) in error" :key="index">
+          {{ err }}
+        </li>
+      </ul>
       <button type="submit" name="button">
         Register
       </button>
@@ -23,7 +27,8 @@ export default {
     return {
       name: '',
       email: '',
-      password: ''
+      password: '',
+      error: null
     }
   },
   methods: {
@@ -36,6 +41,9 @@ export default {
         })
         .then(() => {
           this.$router.push({ name: 'dashboard' })
+        })
+        .catch(err => {
+          this.error = err.response.data.error
         })
     }
   }
